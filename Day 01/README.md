@@ -6,6 +6,6 @@ Part 1 asked us to add all the values in the input file. Simple enough except th
 ## Part 2
 Part 2 asked to keep adding the input list until we found a duplicate total in the accumulated score. Initially I duplicated the input file multiple time until I had enough, but that gave a **large** input file so I eventually settled on this preferred solution with recursion.
 
-I am @penwing on Twitter and @penwing@cybre.space on Mastodon Federations
+I am [@penwing](https://www.twitter.com/penwing) on Twitter and [@penwing@cybre.space](https://cybre.space//@penwing) on Mastodon Federations
 I am @penwing:cybre.space on Matrix
 I am aoc@penwing.me.uk for queries relating to AoC
