@@ -1,7 +1,7 @@
 -- AdventOfCode Day 1, Puzzle 2
 -- Chronal Calibration
 -- https://adventofcode.com/2018/day/1
--- Adds/subtracts all numbers in an input
+-- Adds/subtracts all numbers in an input (looping the input) until finds a duplicate total.
 
 -- Alex Lambert (penwing)
 -- aoc@penwing.me.uk
@@ -35,7 +35,7 @@ runFreqs fileContents n fList = let (found, value, freqList) = runFreq n (map my
 
 main :: IO()
 main = do
-  [fileInput, _] <- getArgs
+  [fileInput] <- getArgs
   fileContents <- readFile fileInput
   runFreqs fileContents 0 []
     

@@ -16,7 +16,7 @@ myReadInt x = read x :: Int
 
 main :: IO()
 main = do
-  [fileInput, _] <- getArgs
+  [fileInput] <- getArgs
   fileContents <- readFile fileInput
   putStrLn (show (foldr1 (+) (map (\a -> (myReadInt a)::Int) (lines fileContents))))
 

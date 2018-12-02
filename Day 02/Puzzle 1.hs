@@ -1,4 +1,4 @@
--- AdventOfCode Day 1, Puzzle 2
+-- AdventOfCode Day 2, Puzzle 1
 -- Inventory Management System
 -- https://adventofcode.com/2018/day/2
 
@@ -7,16 +7,6 @@
 
 import Data.String
 import System.Environment
-
--- sortString :: String -> String
--- sortString [] = []
--- sortString (x:xs) = insert x (sortString xs)
-
--- insert :: Char -> String -> String
--- insert c [] = [c]
--- insert c (x:xs)
---   | c <= x     = c:(x:xs)
---   | c > x      = x:(insert c xs)
 
 countLetters :: String -> [(Char, Int)]
 countLetters [] = []
