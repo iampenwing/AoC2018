@@ -22,25 +22,35 @@ getNum (x:xs) y
   | (x >= '0') && (x <= '9')  = getNum xs (y ++ [x])
   | True                      = ((read y)::Int, xs)
 
--- stakeClaim :: [[[Int]]] -> [Int] -> [[[Int]]]
--- stakeClaim cloth (id:(x:(y:(w:(h:[])))))
---   = iStakeClaim cloth id x y w h
+-- rather than mapping the whole cloth, I'm storing x,y co-ordinates with a list of IDs claiming them
 
--- iStakeClaim :: [[[Int]]] -> Int -> Int -> Int -> Int -> Int -> [[[Int]]]
---  first of all needs to recurse down to the correct height
---  then needs to recurse down each height adding the ID in each correct width
--- iStakeClaim cloth id x 0 w h = 
+makeClaim1 :: [[Int]] -> [((Int, Int), [Int], Int)] -> [((Int, Int), [Int], Int)] 
+makeClaim1 [] claims = claims
+makeClaim1 ((id:(x:(y:(w:(h:[]))))):rest) claims = makeClaim1 rest (makeClaimX1 id x y h w claims) 
 
-stakeClaim :: [(Int, Int, [Int]) -> [Int] -> [(Int, Int, [Int])]
-stakeClaim cloth (id:(x:(y:w:(h:[])))) =
+makeClaimX1 :: Int -> Int -> Int -> Int -> Int -> [((Int, Int), [Int], Int)] -> [((Int, Int), [Int], Int)]
+makeClaimX1 id x y w 0 claims = claims
+makeClaimX1 id x y w h claims = makeClaimX1 id x y w (h - 1) (makeClaimY1 id ((x + h) - 1) y w claims)
 
--- rather than mapping the whole cloth, I'm storing x,y co-ordinates with a l;ist of IDs claiming them
+makeClaimY1 :: Int -> Int -> Int -> Int -> [((Int, Int), [Int], Int)]  -> [((Int, Int), [Int], Int)] 
+makeClaimY1 id x y 1 claims = insertClaim1 ((x, y), id) claims
+makeClaimY1 id x y w claims = makeClaimY1 id x y (w - 1) (insertClaim1 ((x, ((y + w) -1)), id) claims)
+
+insertClaim1 :: ((Int, Int), Int) -> [((Int, Int), [Int], Int)] -> [((Int, Int), [Int], Int)]
+insertClaim1 ((claimX, claimY), claimID) [] = [((claimX, claimY), [claimID], 1)]
+insertClaim1 ((claimX, claimY), claimID) (((firstX, firstY), firstIDs, firstCount):claims)
+  | (claimX == firstX) && (claimY == firstY) = (((claimX, claimY), (claimID:firstIDs), (firstCount + 1)):claims)
+  | True                                     = (((firstX, firstY), firstIDs, firstCount):(insertClaim1 ((claimX, claimY), claimID) claims))
+
+countOverlaps1 :: [((Int, Int), [Int], Int)] -> Int
+countOverlaps1 [] = 0
+countOverlaps1 (((_, _), _, c):squares) = if c > 1 then 1 + (countOverlaps1 squares) else countOverlaps1 squares
 
 main :: IO()
 main = do
   [fileInput] <- getArgs
   fileContents <- readFile fileInput
-  putStrLn (show (map extractClaim (lines fileContents)))
+  putStrLn (show (countOverlaps1 (makeClaim1 (map extractClaim (lines fileContents)) [])))
 
   
 
